@@ -1,4 +1,4 @@
-subroutine bindstatic(ptr_static)
+subroutine bindstatic(ptr_static) bind(c)
   use datamod
   use iso_c_binding, only: c_loc
   type(c_ptr), intent(inout) :: ptr_static
