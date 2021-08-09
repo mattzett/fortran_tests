@@ -4,8 +4,8 @@ implicit none (type, external)
 public
 
 ! define different types of module variables, we make pointers to these so don't use bind(c)
-integer, target :: lx=4, ly=5
-real(8), dimension(4,5), target :: datastatic
+integer, target :: lx=3, ly=5
+real(8), dimension(3,5), target :: datastatic
 real(8), dimension(:,:), pointer :: datapointer
 real(8), dimension(:,:), allocatable, target :: dataalloc
 
@@ -44,6 +44,8 @@ subroutine print_data_rows(array) bind(c)
   real(8), dimension(:,:), intent(in) :: array
   integer :: i
 
+  print*, '  printing array from fortran:  '
+  print*, '  array shape:  ',shape(array)
   do i=1,size(array,1)
     print*, array(i,:)
   end do
