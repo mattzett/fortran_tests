@@ -4,10 +4,10 @@ implicit none (type, external)
 public
 
 ! define different types of module variables, we make pointers to these so don't use bind(c)
-integer, parameter :: lx=10, ly=10
-real(8), dimension(lx,ly), target :: datastatic
+integer, target :: lx=4, ly=5
+real(8), dimension(4,5), target :: datastatic
 real(8), dimension(:,:), pointer :: datapointer
-real(8), dimension(:,:), allocatable :: dataalloc
+real(8), dimension(:,:), allocatable, target :: dataalloc
 
 ! derived type containing data and procedures
 type :: dataobj
@@ -27,7 +27,7 @@ subroutine set_data(self,array)
   class(dataobj), intent(inout) :: self
   real(8), dimension(:,:), intent(in) :: array
 
-  allocate(self%dataval(size(array,1),size(array,2))
+  allocate(self%dataval(size(array,1),size(array,2)))
   self%dataval(:,:)=array(:,:)
 end subroutine set_data
 
@@ -40,8 +40,8 @@ end subroutine print_data
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! module procedures
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-subroutine print_data_rows(array)
-  real(wp), dimension(:,:), intent(in) :: array
+subroutine print_data_rows(array) bind(c)
+  real(8), dimension(:,:), intent(in) :: array
   integer :: i
 
   do i=1,size(array,1)

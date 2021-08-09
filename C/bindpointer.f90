@@ -1,6 +1,6 @@
 subroutine bindpointer(ptr_pointer) bind(C)
   use datamod
-  use iso_c_binding, only: c_loc
+  use, intrinsic :: iso_c_binding, only: c_loc,c_ptr
   type(c_ptr), intent(inout) :: ptr_pointer
 
   allocate(datapointer(lx,ly))
