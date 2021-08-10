@@ -40,14 +40,15 @@ end subroutine print_data
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! module procedures
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-subroutine print_data_rows(array) bind(c)
-  real(8), dimension(:,:), intent(in) :: array
+subroutine print_data_rows(array,lx,ly) bind(c)    ! note we cannot bind to C with assumed shape arguments, sizes must be input
+  real(8), dimension(lx,ly), intent(in) :: array
+  integer, intent(in) :: lx,ly
   integer :: i
 
   print*, '  printing array from fortran:  '
-  print*, '  array shape:  ',shape(array)
-  do i=1,size(array,1)
-    print*, array(i,:)
+  print*, '  input sizes:  ',lx,ly
+  do i=1,lx
+    print*, array(i,1:ly)
   end do
 end subroutine print_data_rows
 
