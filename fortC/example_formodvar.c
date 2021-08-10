@@ -1,6 +1,7 @@
 #include <stdio.h>
 void main() {
   double* dataptr;                         // pointers for various fortran data
+  double** dataptr2D;
   //double dataptr[3][5];
   double* dataptralloc;
   double* dataptrpointer;
@@ -8,7 +9,7 @@ void main() {
   int* lyptr;
   int i; int j;
 
-  void printarray(double*,int,int);
+  void printarray(double**,int,int);
   extern void bindstatic(double**, int**, int**);        // bind our pointer to its array in fortran
   extern void bindalloc(double**);
   extern void bindpointer(double**);
@@ -35,11 +36,13 @@ void main() {
   }
   printf("\n");
 
-  //printarray(dataptr,*lxptr,*lyptr);
+  // visualize as a 2D array
+  bindstatic(&dataptr2D,&lxptr,&lyptr);
+  printarray(dataptr2D,*lxptr,*lyptr);
 
   // make print static array as seen by fortran
   // FIXME: must convert to fortran array pointer of set size...
-  print_data_rows(&dataptr);
+  //print_data_rows(&dataptr);
 
   printf("allocatable array\n");
   bindalloc(&dataptralloc);
@@ -53,13 +56,14 @@ void main() {
 
 
 // function that prints matrix
-void printarray(double* array, int lx, int ly) {
+void printarray(double** array, int lx, int ly) {
   int i; 
   int j;
 
+  printf("  printing from C function...");
   for (i=0;i<lx;i++){
     for (j=0;j<ly;j++){
-      printf("%d %d %5.2f ",i,j,array[i,j]);
+      printf("%d %d %5.2f ",i,j,array[i][j]);
     }
     printf("\n");
   }
