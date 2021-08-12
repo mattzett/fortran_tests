@@ -1,19 +1,12 @@
 #include <stdio.h>
 void main() {
   double* dataptr;                                        // pointers for various fortran data
-  double* dataptralloc;
-  double* dataptrpointer;
   int* lxptr;
   int* lyptr;
-  int i; int j;
 
   void printmat(double*,int,int);
   void printvec(double*,int);
-  extern void bindstatic(double**, int**, int**);        // bind our pointer to its array in fortran, arguments are c_ptrs passed by reference, so pointers to pointers...
-  extern void bindalloc(double**, int**, int**);
-  extern void bindpointer(double**, int**, int**);
-  extern void print_data_rows(double*, int*, int*);       // fortran routine to print array data to screen
-
+  
   /////////////////////////////////////////////////////////////////////////////////////////
   // First test bindings for a static array
   ////////////////////////////////////////////////////////////////////////////////////////
