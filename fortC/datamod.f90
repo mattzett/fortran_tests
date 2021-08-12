@@ -12,9 +12,11 @@ real(8), dimension(:,:), allocatable, target :: dataalloc
 ! derived type containing data and procedures
 type :: dataobj
   real(8), dimension(:,:), pointer :: dataval
+  integer :: lx,ly
   contains
     procedure :: set_data
     procedure :: print_data
+    final :: destructor
 end type dataobj
 
 contains
@@ -27,7 +29,9 @@ subroutine set_data(self,array)
   class(dataobj), intent(inout) :: self
   real(8), dimension(:,:), intent(in) :: array
 
-  allocate(self%dataval(size(array,1),size(array,2)))
+  self%lx=size(array,1)
+  self%ly=size(array,2)
+  allocate(self%dataval(self%lx,self%ly))
   self%dataval(:,:)=array(:,:)
 end subroutine set_data
 
@@ -36,6 +40,14 @@ subroutine print_data(self)
 
   print*, self%dataval(:,:)
 end subroutine print_data
+
+subroutine destructor(self)
+  type(dataobj), intent(inout) :: self
+
+  print*, '  dataobj destructor triggered (object going out of scope)!'
+  deallocate(self%dataval)
+  self%lx=0; self%ly=0;
+end subroutine destructor
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! module procedures
