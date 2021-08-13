@@ -3,13 +3,7 @@ module datamod
 implicit none (type, external)
 public
 
-! define different types of module variables, we make pointers to these so don't use bind(c)
-integer, target :: lx=3, ly=5
-real(8), dimension(3,5), target :: datastatic
-real(8), dimension(:,:), pointer :: datapointer
-real(8), dimension(:,:), allocatable, target :: dataalloc
-
-! derived type containing data and procedures
+! derived type definition containing data and procedures
 type :: dataobj
   real(8), dimension(:,:), pointer :: dataval
   integer :: lx,ly
@@ -18,6 +12,13 @@ type :: dataobj
     procedure :: print_data
     final :: destructor
 end type dataobj
+
+! define different types of module variables, we make pointers to these so don't use bind(c)
+integer, target :: lx=3, ly=5
+real(8), dimension(3,5), target :: datastatic
+real(8), dimension(:,:), pointer :: datapointer
+real(8), dimension(:,:), allocatable, target :: dataalloc
+type(dataobj) :: testdata
 
 contains
 

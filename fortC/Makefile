@@ -17,5 +17,5 @@ all:
 clean:
 	rm *.o
 	rm *.mod
-	rm example_formodvar
+	rm example_formodvar example_formodobj
 

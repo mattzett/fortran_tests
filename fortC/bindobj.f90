@@ -1,9 +1,8 @@
 subroutine bindobj(ptr_alloc,lx,ly) bind(c)
-  use datamod, only: dataobj
+  use datamod, only: testdata
   use, intrinsic :: iso_c_binding, only: c_loc,c_ptr
   type(c_ptr), intent(inout) :: ptr_alloc
   integer, intent(inout) :: lx,ly
-  type(dataobj) :: testdata     ! may be local to this subroutine so may go out of scope???
   real(8), dimension(3,5) :: numbers
 
   ! initialize some test data
