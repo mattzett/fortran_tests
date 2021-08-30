@@ -8,7 +8,7 @@ int main() {
   void printvec(double*,int);
   void extern bindobj(double**, int*, int*);
 
-  // try to bind a pointer to the object data and see if we can print the data
+  // try to bind a pointer to the object data and see if we can print/access the data
   bindobj(&dataptr,&lx,&ly);
   printmat(dataptr,lx,ly);
 

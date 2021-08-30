@@ -1,3 +1,4 @@
+!> This binds an array that is incapsulated in a fortran type to a C pointer
 subroutine bindobj(ptr_alloc,lx,ly) bind(c)
   use datamod, only: testdata
   use, intrinsic :: iso_c_binding, only: c_loc,c_ptr
