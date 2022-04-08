@@ -39,6 +39,7 @@ end subroutine set_data
 subroutine print_data(self)
   class(dataobj), intent(inout) :: self
 
+  print*, 'Stored data:  '
   print*, self%dataval(:,:)
 end subroutine print_data
 

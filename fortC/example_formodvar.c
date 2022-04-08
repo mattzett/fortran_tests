@@ -1,5 +1,5 @@
 #include <stdio.h>
-void main() {
+int main() {
   double* dataptr;                                        // pointers for various fortran data
   double* dataptralloc;
   double* dataptrpointer;
@@ -83,6 +83,6 @@ void main() {
   // use fortran routine to print same memory space
   print_data_rows(dataptrpointer,lxptr,lyptr);
 
-  return;
+  return(0);
 }
 
