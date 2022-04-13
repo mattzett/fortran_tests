@@ -8,14 +8,22 @@ contains
     integer, intent(in) :: objtype
     type(c_ptr), intent(inout) :: cptr_f90obj
     class(dataobj_poly), pointer :: obj
+    type(data1), pointer :: tmpobj1
+    type(data2), pointer :: tmpobj2
     real(8), dimension(3,5) :: numbers
   
     ! allocate derived type
     select case (objtype)
       case (1)
         allocate(data1::obj)
+        allocate(tmpobj1)
+        cptr_f90obj=c_loc(tmpobj1)
+        obj=>tmpobj1
       case (2)
         allocate(data2::obj)
+        allocate(tmpobj2)
+        cptr_f90obj=c_loc(tmpobj2)
+        obj=>tmpobj2
       case default
         error stop 'unable to identify object type during construction'
     end select
@@ -25,10 +33,6 @@ contains
     numbers(1:3,1:5)=reshape([15,14,13,12,11,10,9,8,7,6,5,4,3,2,1],[3,5])
     call obj%set_data(numbers)
     call obj%print_data()
-  
-    ! bind pointers to C
-    print*, 'Getting a C pointer to data object'
-    cptr_f90obj=c_loc(obj)
   end subroutine objconstruct
 
 

@@ -8,13 +8,13 @@ int main() {
 
   printf(" Making object1\n");
   objtype=1;
-  objcontruct(&objtype,&objptr1);
+  objconstruct(&objtype,&objptr1);
   printf(" Using object1\n");
   objuse(&objtype,&objptr1);
 
   printf(" Making object2\n");
   objtype=2;
-  objcontruct(&objtype,&objptr2);
+  objconstruct(&objtype,&objptr2);
   printf(" Using object2\n");
   objuse(&objtype,&objptr2);
 

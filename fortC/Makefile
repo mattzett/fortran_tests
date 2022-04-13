@@ -14,7 +14,7 @@ all:
 	$(FC) -c objref.f90 -o objref.o
 	$(FC) -c objprint.f90 -o objprint.o
 	$(CC) -c example_objptr.c
-	$(FC) -c datamod_poly.f90 -o datamod.o
+	$(FC) -c datamod_poly.f90 -o datamod_poly.o
 	$(FC) -c c_interface_poly.f90 -o c_interface_poly.o
 	$(CC) -c example_objptr_poly.c
 	$(LL) datamod.o bindstatic.o bindalloc.o bindpointer.o printfun.o example_formodvar.o -o example_formodvar
@@ -25,5 +25,5 @@ all:
 clean:
 	rm *.o
 	rm *.mod
-	rm example_formodvar example_formodobj example_objptr
+	rm example_formodvar example_formodobj example_objptr example_objptr_poly
 
