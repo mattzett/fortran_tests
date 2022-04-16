@@ -1,4 +1,4 @@
-!> This binds an array that is incapsulated in a fortran type to a C pointer
+!> This binds an array that is incapsulated in a fortran type to a C pointer (presumably void?)
 subroutine objref(cptr_f90obj,lx,ly) bind(c)
   use datamod, only: dataobj
   use, intrinsic :: iso_c_binding, only: c_loc,c_ptr,c_f_pointer
@@ -22,6 +22,7 @@ subroutine objref(cptr_f90obj,lx,ly) bind(c)
   ! bind pointers to C
   print*, 'Getting a C pointer to data object'
   cptr_f90obj=c_loc(obj)
+  print*, 'C address of fortran class:  '
   print*, cptr_f90obj
 
   print*, 'Convert C pointer to fortran pointer'

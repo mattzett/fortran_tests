@@ -15,10 +15,14 @@ end type dataobj_poly
 
 type, extends(dataobj_poly) :: data1
   integer :: datstat
+  contains
+    procedure :: print_data=>print_data1
 end type data1
 
 type, extends(dataobj_poly) :: data2
   real(8) :: datmag
+  contains
+    procedure :: print_data=>print_data2
 end type data2
 contains
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -34,19 +38,36 @@ contains
     self%dataval(:,:)=array(:,:)
   end subroutine set_data
   
+  !> the default print is as a row vector
   subroutine print_data(self)
     class(dataobj_poly), intent(inout) :: self
   
     print*, 'Stored data:  '
     print*, self%dataval(:,:)
   end subroutine print_data
-  
-!  subroutine destructor(self)
-!    type(dataobj), intent(inout) :: self
-!  
-!    print*, '  dataobj destructor triggered (object going out of scope)!'
-!    deallocate(self%dataval)
-!    self%lx=0; self%ly=0;
-!  end subroutine destructor
+
+  !> objects of type1 will print out as a matrix on the console
+  subroutine print_data1(self)
+    class(data1), intent(inout) :: self
+    integer :: ix
+
+    print*, 'Stored data:  '
+    do ix=1,self%lx
+      print*, self%dataval(ix,:)
+    end do
+  end subroutine print_data1
+
+  !> objects of type2 will print out as a column vector on the console
+  subroutine print_data2(self)
+    class(data2), intent(inout) :: self
+    integer :: ix,iy
+
+    print*, 'Stored data:  '
+    do ix=1,self%lx
+      do iy=1,self%ly
+        print*, self%dataval(ix,iy)
+      end do
+    end do
+  end subroutine print_data2
 end module datamod_poly
 
