@@ -1,22 +1,25 @@
+!> this module contains top-level procedures that C will call to manipulate a fortran object/environment
 module c_interface_poly
   use datamod_poly, only: dataobj_poly,data1,data2
-  use, intrinsic :: iso_c_binding, only: c_loc,c_ptr,c_f_pointer
+  use, intrinsic :: iso_c_binding, only: c_loc,c_ptr,c_f_pointer,c_int
   implicit none
 contains
   !> return a c pointer to a fortran polymorphic object that is created by this routine; in this case we
   !    are passing the object type to be created from the C main program
-  subroutine objconstruct_C(objtype,cptr_f90obj) bind(C, name='objconstruct_C')
+  subroutine objconstruct_C(objtype,cptr_f90obj,cptr_indata,lx,ly) bind(C, name='objconstruct_C')
     integer, intent(in) :: objtype
     type(c_ptr), intent(inout) :: cptr_f90obj
+    type(c_ptr), intent(in) :: cptr_indata
+    integer(kind=c_int), intent(in) :: lx,ly
     class(dataobj_poly), pointer :: obj
     type(data1), pointer :: tmpobj1    ! declared as pointers so they don't auto-allocate when we return
     type(data2), pointer :: tmpobj2    ! ditto
-    real(8), dimension(3,5) :: numbers
+    real(8), dimension(:,:), pointer :: fortdata
 
     ! nullify for sake of clarity and good practic
     nullify(tmpobj1,tmpobj2)
   
-    ! allocate derived type
+    ! allocate derived type, note that c_loc only works on a static type (i.e. not polymorphic class), hence the tmpobj's
     select case (objtype)
       case (1)
         allocate(data1::obj)
@@ -34,11 +37,10 @@ contains
 
     ! initialize some test data, and call methods to print
     print*, 'Initializing test data...'
-    numbers(1:3,1:5)=reshape([15,14,13,12,11,10,9,8,7,6,5,4,3,2,1],[3,5])
-    call obj%set_data(numbers)
-    !call obj%print_data()
+    call c_f_pointer(cptr_indata,fortdata,shape=[lx,ly])
+    call obj%set_data(fortdata)
 
-    ! note lack of deallocate and nullify here; we need memory allocated to persist past the return;
+    ! note lack of deallocate and nullify here; we need memory allocated to persist past the return.
   end subroutine objconstruct_C
 
 
@@ -50,12 +52,6 @@ contains
 
     obj=>set_pointer_dyntype(objtype,objC)
     call obj%print_data()
-
-!    if (objtype==1) then
-!      print*, 'Extra status:  ',obj%datstat
-!    else if (objtype==2) then
-!      print*, 'Extra mag:  ',obj%datmag
-!    end if
   end subroutine objuse_C
 
 
